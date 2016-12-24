@@ -46,7 +46,7 @@ namespace IdentityServer4MongoDb.Samples.Mvc
                 loggerFactory.AddDebug();
 
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                // app.UseBrowserLink();
             }
             else
             {
@@ -71,20 +71,26 @@ namespace IdentityServer4MongoDb.Samples.Mvc
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             
-            app.UseIdentityServer();
+            app.Map("/identity", (identity) =>
+            {
+                identity.UseIdentityServer();
+            });
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = "cookies",
-                AutomaticAuthenticate = true,
+                AutomaticAuthenticate = true
             });
 
             var oidcOptions = new OpenIdConnectOptions
             {
+                // Don't do this in production!
+                RequireHttpsMetadata = false,
+
                 AuthenticationScheme = "oidc",
                 SignInScheme = "cookies",
 
-                Authority = "https://localhost:5000/identity",
+                Authority = "http://localhost:5000/identity",
                 ClientId = "mvc",
                 ClientSecret = "secret",
                 ResponseType = "code id_token",
