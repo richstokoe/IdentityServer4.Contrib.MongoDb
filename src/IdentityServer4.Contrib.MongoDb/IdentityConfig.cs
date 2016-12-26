@@ -24,7 +24,9 @@ namespace IdentityServer4.Contrib.MongoDb
                 .AddTransient<IReferenceTokenStore, MongoDbReferenceTokenStore>()
                 .AddTransient<IRefreshTokenStore, MongoDbRefreshTokenStore>()
                 .AddTransient<IResourceStore, MongoDbResourceStore>()
-                .AddTransient<ISigningCredentialStore, MongoDbCredentialStore>();
+                .AddTransient<ISigningCredentialStore, MongoDbCredentialStore>()
+                
+                .AddSingleton<IDocumentClientProvider, DocumentClientProvider>();
 
             return builder;
         }

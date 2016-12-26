@@ -4,11 +4,19 @@ using System.Collections.Generic;
 using System.Text;
 using IdentityServer4.Models;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents.Client;
 
 namespace IdentityServer4.Contrib.MongoDb
 {
     public class MongoDbResourceStore : IResourceStore
     {
+        private readonly DocumentClient _client;
+
+        public MongoDbResourceStore(IDocumentClientProvider documentClientProvider)
+        {
+            _client = documentClientProvider.GetDocumentClient();
+        }
+
         public Task<ApiResource> FindApiResourceAsync(string name)
         {
             throw new NotImplementedException();

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using IdentityServer4.Contrib.MongoDb;
 
 namespace IdentityServer4MongoDb.Samples.Mvc
 {
@@ -29,6 +30,12 @@ namespace IdentityServer4MongoDb.Samples.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<DocumentDbSettings>(new DocumentDbSettings
+            {
+                DatabaseUri = new Uri("http://localhost:27017"),
+                PrimaryKey = string.Empty
+            });
+
             IdentityServer4.Contrib.MongoDb.IdentityConfig
                 .Setup(services)
                 .AddTemporarySigningCredential();

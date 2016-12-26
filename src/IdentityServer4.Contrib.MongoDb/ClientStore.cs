@@ -11,7 +11,11 @@ namespace IdentityServer4.Contrib.MongoDb
     {
         public Task<Client> FindClientByIdAsync(string clientId)
         {
-            throw new NotImplementedException();
+            Client client = new Client
+            {
+                ClientName = "mvc"
+            };
+            return Task.FromResult<Client>(client);
         }
     }
 }
