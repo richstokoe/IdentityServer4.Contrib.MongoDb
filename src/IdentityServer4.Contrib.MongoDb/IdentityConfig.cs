@@ -9,13 +9,22 @@ using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Contrib.MongoDb;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Microsoft.Extensions.Configuration;
 
 namespace IdentityServer4.Contrib.MongoDb
 {
     public class IdentityConfig
     {
-        public static IIdentityServerBuilder Setup(IServiceCollection services)
+        public static IIdentityServerBuilder Setup(IConfigurationRoot config, IServiceCollection services)
         {
+            services.AddSingleton<DocumentDbSettings>(new DocumentDbSettings
+            {
+                DatabaseName = config[DocumentDbSettings.DatabaseNameKey],
+                DatabaseUri = new Uri(config[DocumentDbSettings.DatabaseUriKey]),
+                PrimaryKey = config[DocumentDbSettings.PrimaryKeyKey]
+            });
+
+            // Build up the IdentityServer (we'll return this later to allow for additional customisation by the consumer)
             var builder = services.AddIdentityServer();
             builder.Services
                 .AddTransient<IClientStore, MongoDbClientStore>()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Azure.Documents.Client;
+using System.Threading.Tasks;
 
 namespace IdentityServer4.Contrib.MongoDb
 {
@@ -29,6 +30,8 @@ namespace IdentityServer4.Contrib.MongoDb
                         ConnectionMode = ConnectionMode.Direct,
                         ConnectionProtocol = Protocol.Tcp
                     });
+
+                _client.OpenAsync().Wait(); // TODO: async
             }
             return _client;
         }
